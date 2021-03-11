@@ -4,8 +4,11 @@ const express = require('express');
 
 const app = express();
 
-app.use((req, res) => {
+app.use((req, res, next) => {
   console.log("middlewsre")
+  res.status(200).json({
+    status: "fail"  })
+  next();
 })
 
 //get all restaurants 
