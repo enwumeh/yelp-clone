@@ -1,16 +1,10 @@
 require('dotenv').config()
-
 const express = require('express');
-
+const morgan = require('morgan');
 const app = express();
 
-app.use((req, res, next) => {
-  console.log("middlewsre")
-  res.status(200).json({
-    status: "fail"  })
-  next();
-})
-
+app.use(express.json());
+   
 //get all restaurants 
 app.get("/api/v1/restaurants", (req, res) => {
   console.log("route handler run");
@@ -26,15 +20,37 @@ app.get("/api/v1/restaurants", (req, res) => {
 });
 
 
-app.get("/api/v1/restaurants/:ddddid", (req, res) => {
+app.get("/api/v1/restaurants/:id", (req, res) => {
   console.log(req)
+  res.status(200).json({
+    status: "success"
+  })
 });
+
+app.delete("api/v1/restaurants/:id"), (req, res) => {
+  res.status(204).json({
+    status: "success"
+  })
+}
 
 
 app.post("/api/v1/restaurants", (req, res) => {
-  console.log(req)
+  console.log("ffff", req.params.id, req.body)
+  res.status(201).json({
+    status: "success",
+    data: {
+      restaurant: ["cheeseburger palace"]
+    }
+  })
+
 })
 
+app.put("api/v1/restaurants/:id"), (req, res) => {
+  console.log("ssssfff")
+
+  console.log(req.params.id);
+  console.log(req.body);
+}
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log(`server is listening on port ${port}`);
