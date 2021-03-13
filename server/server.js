@@ -9,26 +9,43 @@ app.use(express.json());
 //get all restaurants 
 app.get("/api/v1/restaurants", async (req, res) => {
 
- const dbQuery = await db.query("SELECT * FROM restaurants")
-  console.log(dbQuery);
+  try {
+    const dbQuery = await db.query("SELECT * FROM restaurants")
+    console.log(dbQuery);
   
-  // res.json("get all restaraunts")
-  res.status(200).json({
-    status: "success",
-    data: {
-      restaurant:
-      ['cold stone','pizza hut'],
-    },
+    // res.json("get all restaraunts")
+    res.status(200).json({
+      status: "success",
+      results: dbQuery.rows.length,
+      data: {
+        restaurants: dbQuery.rows,
+      },
+    });
+  }
+  catch (err) {
+console.log(err)
+  }
+});
+
+
+app.get("/api/v1/restaurants/:id", async (req, res) => {
+  try {
+    const singleSpot = await db.query(`SELECT * FROM restaurants WHERE id = ${req.params.id} `)
+    // console.log("heres the id:", req.params.id)
+    console.log(singleSpot.rows)
+    res.status(200).json({
+      status: "success",
+      results: singleSpot.rows.length,
+      data: {
+        restaurant: singleSpot.rows
+      }
+    })
+  } 
+  catch (err) {
+    console.log(err)
+  }
   });
-});
 
-
-app.get("/api/v1/restaurants/:id", (req, res) => {
-  console.log(req)
-  res.status(200).json({
-    status: "success"
-  })
-});
 
 app.delete("api/v1/restaurants/:id"), (req, res) => {
   res.status(204).json({

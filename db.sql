@@ -10,5 +10,5 @@ price_range INT NOT NULL check(price_range >=1 and price_range <=5)
 
 
 
-INSERT INTO restaurants (name, location, price_range) VALUES ('pizza hut','matteson', 2);
+INSERT INTO restaurants (name, location, price_range) VALUES ('cracker barrel','flossmoor', 1);
 DELETE FROM restaurants WHERE (price_range < 1 and price_range > 6)
