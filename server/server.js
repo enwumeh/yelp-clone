@@ -2,12 +2,15 @@ require('dotenv').config()
 const express = require('express');
 const morgan = require('morgan');
 const app = express();
+const db = require('./db');
 
 app.use(express.json());
    
 //get all restaurants 
-app.get("/api/v1/restaurants", (req, res) => {
-  console.log("route handler run");
+app.get("/api/v1/restaurants", async (req, res) => {
+
+ const dbQuery = await db.query("SELECT * FROM restaurants")
+  console.log(dbQuery);
   
   // res.json("get all restaraunts")
   res.status(200).json({
@@ -55,3 +58,4 @@ const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log(`server is listening on port ${port}`);
 });
+
