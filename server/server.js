@@ -26,10 +26,11 @@ app.get("/api/v1/restaurants", async (req, res) => {
   catch (err) {
 console.log(err)
   }
-});
+ });
 
 
-app.get("/api/v1/restaurants/:id", async (req, res) => {
+  app.get("/api/v1/restaurants/:id", async (req, res) => {
+
   try {
     const singleSpot = await db.query("SELECT * FROM restaurants WHERE id = $1", [req.params.id]);
     // console.log("heres the id:", req.params.id)
@@ -48,11 +49,21 @@ app.get("/api/v1/restaurants/:id", async (req, res) => {
   });
 
 
-app.delete("api/v1/restaurants/:id"), (req, res) => {
-  res.status(204).json({
-    status: "success"
-  })
-}
+app.delete("/api/v1/restaurants/:id", async (req, res) => {
+
+  try {
+    const DELETED = await db.query("DELETE FROM restaurants WHERE id = $1 returning *", [req.params.id]);
+    console.log(DELETED)
+    res.status(204).json({
+      status: "success",
+      data: DELETED
+    })
+  }
+  catch (err) {
+    console.log(err)
+  }
+});
+
 
 
 app.post("/api/v1/restaurants", async (req, res) => {
@@ -61,7 +72,7 @@ app.post("/api/v1/restaurants", async (req, res) => {
   try {
     const results = await db.query("INSERT INTO restaurants (name, location, price_range) VALUES ($1, $2, $3) returning *", [req.body.name, req.body.location, req.body.price_range]);
     console.log("RESULTS", results)
-    console.log("req.body",req.body)
+    console.log("req.body", req.body)
 
     res.status(201).json({
       status: "success",
@@ -70,20 +81,33 @@ app.post("/api/v1/restaurants", async (req, res) => {
       }
     })
   }
-  catch(err) {
-console.log(err)
+  catch (err) {
+    console.log(err)
   }
  
 
-})
+});
 
-app.put("api/v1/restaurants/:id"), (req, res) => {
-  console.log("updated")
+//UPDATE AN ENTRY
+app.put("/api/v1/restaurants/:id", async (req, res) => {
 
-
-  console.log("the IDDDD",req.params.id);
-  console.log(req.body);
+  try {
+    const result = await db.query("UPDATE restaurants SET name = $1, location = $2, price_range = $3 WHERE id = $4 returning *", [req.body.name, req.body.location, req.body.price_range, req.params.id]);
+    console.log("updated", result)
+    res.status(200).json({
+      status:"success",
+      data: {
+        results: result
+      }
+    })
+  }
+ 
+catch (err) {
+  console.log(err)
 }
+
+
+})
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log(`server is listening on port ${port}`);
