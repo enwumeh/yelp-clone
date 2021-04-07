@@ -1,9 +1,11 @@
 import React from 'react'
-
+import AddRestaurant from '../Components/AddRestaurant'
+import Header from "../Components/Header"
 const Home = () => {
   return (
     <div>
-      hellouu
+      <Header />
+      <AddRestaurant/>
     </div>
   )
 }
