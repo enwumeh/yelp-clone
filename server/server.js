@@ -13,7 +13,7 @@ app.get("/api/v1/restaurants", async (req, res) => {
 
   try {
     const dbQuery = await db.query("SELECT * FROM restaurants")
-    // console.log("HERE IS DB QUERY",dbQuery);
+    console.log("HERE IS DB QUERY",dbQuery);
     // res.send(dbQuery)
   
     // res.json("get all restaraunts")
@@ -65,7 +65,7 @@ app.delete("/api/v1/restaurants/:id", async (req, res) => {
     console.log(err)
   }
 });
-
+ 
 
 
 app.post("/api/v1/restaurants", async (req, res) => {
