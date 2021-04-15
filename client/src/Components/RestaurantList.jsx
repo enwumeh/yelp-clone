@@ -1,16 +1,17 @@
 import React, { useEffect, useContext } from 'react';
 import Restaurantfinder from '../APIs/Restaurantfinder';
-import { RestaurantsContext } from "../context/RestaurantsContext"
+import { RestaurantsContext } from "../context/RestaurantContext"
 
 const RestaurantList = (props) => {
-  const { restaurants, setRestaurants} = useContext(RestaurantsContext)
+  const { restaurants, setRestaurants } = useContext(RestaurantsContext)
+
+
   useEffect(() => {
-    
     const fetchData = async () => {
       try {
         const response = await Restaurantfinder.get("/");
         setRestaurants(response.data.data.restaurants)
-        console.log("REPONSE LOADED NOW", response);
+        console.log("REPONSE LOADED NOW",  restaurants);
         
       } catch (err) {
         console.log(err)
@@ -33,7 +34,16 @@ const RestaurantList = (props) => {
           </tr>
         </thead>
         <tbody className="table-dark">
-          <tr>
+          {restaurants.map(restaurant => 
+            <tr>
+              <td>{restaurant.name}</td>
+              <td>{restaurant.location}</td>
+              <td>{("$").repeat(restaurant.price_range)}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr> )}
+          {/* <tr>
             <td>church's chicken</td>
             <td>homewood</td>
             <td>$$$</td>
@@ -56,7 +66,7 @@ const RestaurantList = (props) => {
             <td>
               <button className="btn btn-danger">Delete</button>
             </td>
-          </tr>
+          </tr> */}
           
         </tbody>
       </table>
