@@ -1,22 +1,20 @@
-import React, { useEffect, useContext } from 'react';
-import Restaurantfinder from '../APIs/Restaurantfinder';
-import { RestaurantsContext } from "../context/RestaurantContext"
+import React, { useEffect, useContext } from "react";
+import Restaurantfinder from "../APIs/Restaurantfinder";
+import { RestaurantsContext } from "../context/RestaurantContext";
 
 const RestaurantList = (props) => {
-  const { restaurants, setRestaurants } = useContext(RestaurantsContext)
-
+  const { restaurants, setRestaurants } = useContext(RestaurantsContext);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await Restaurantfinder.get("/");
-        setRestaurants(response.data.data.restaurants)
-        console.log("REPONSE LOADED NOW",  restaurants);
-        
+        setRestaurants(response.data.data.restaurants);
+        console.log("REPONSE LOADED NOW", restaurants);
       } catch (err) {
-        console.log(err)
-       }
-    }
+        console.log(err);
+      }
+    };
     fetchData();
   }, []);
 
@@ -34,15 +32,25 @@ const RestaurantList = (props) => {
           </tr>
         </thead>
         <tbody className="table-dark">
-          {restaurants.map(restaurant => 
-            <tr>
-              <td>{restaurant.name}</td>
-              <td>{restaurant.location}</td>
-              <td>{("$").repeat(restaurant.price_range)}</td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr> )}
+          {restaurants
+            ? restaurants.map((restaurant) => {
+                return (
+                  <tr key={restaurant.id}>
+                    <td>{restaurant.name}</td>
+                    <td>{restaurant.location}</td>
+                    <td>{"$".repeat(restaurant.price_range)}</td>
+                    <td>ratings</td>
+                    <td>
+                      <button className="btn btn-warning">Update</button>
+                    </td>
+                    <td>
+                      <button className="btn btn-danger">Delete</button>
+                    </td>
+                  </tr>
+                );
+              })
+            : null}
+          )
           {/* <tr>
             <td>church's chicken</td>
             <td>homewood</td>
@@ -67,11 +75,10 @@ const RestaurantList = (props) => {
               <button className="btn btn-danger">Delete</button>
             </td>
           </tr> */}
-          
         </tbody>
       </table>
     </div>
-  )
-}
+  );
+};
 
-export default RestaurantList
+export default RestaurantList;
